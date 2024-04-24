@@ -69,8 +69,6 @@ const Form = () => {
          </select>
        </div>
 
-  
-      
        <div>
           <label htmlFor="fromYear">From</label>
           <select id="fromYear" name="fromYear" value={selectedFromYear} onChange={(e) => setSelectedFromYear(e.target.value)}>
@@ -105,9 +103,6 @@ const Form = () => {
       </form>
     </>
   )
-  
-  
-  
 };
 
 export default Form;
