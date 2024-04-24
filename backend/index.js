@@ -1,24 +1,17 @@
 import express from "express";
 import cors from "cors";
-import mysql from "mysql";
+import db from "./connnection.js";
 const app = express();
 const PORT= 8080;
 app.use(express.json());
 app.use(cors());
-
-const db = mysql.createPool({
-        host: "localhost",
-        user: "root",
-        password: "9664069557",
-        database: "metdata",
-        connectionLimit: 10
-});
-
-db.connect((err)=>{
-    if(err){
-        console.log(err);
-    }
+app.get("/",(req,res)=>{
+    res.send("hello world")
 })
+    db.connect((err)=>{
+        if(err) throw err;
+        console.log("mysql connected"); 
+    })
 
 
 app.listen(PORT,()=>{
