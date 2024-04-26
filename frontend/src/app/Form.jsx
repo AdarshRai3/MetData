@@ -1,6 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import { statesAndDistricts, dataTypes, years } from './SelectData';
+import axios from 'axios';
 import styles from './page.module.css';
 
 const Form = () => {
@@ -11,11 +12,33 @@ const Form = () => {
   const [selectedFromYear, setSelectedFromYear] = useState('');
   const [selectedToYear, setSelectedToYear] = useState('');
   const [selectedAction, setSelectedAction] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   // Function to handle form submission
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(`Form submitted with options: ${selectedState}, ${selectedDistrict}, ${selectedDataType}, ${selectedFromYear}, ${selectedToYear}, ${selectedAction}`);
+    const formData = {
+      state: selectedState.toUpperCase(),
+      district: selectedDistrict.toUpperCase(),
+      dataType: selectedDataType,
+      fromYear: selectedFromYear,
+      toYear: selectedToYear,
+      action: selectedAction
+    };
+    console.log(`Form submitted with options: ${JSON.stringify(formData)}`);
+    try {
+      const response = await axios.post('http://localhost:8080/api/formdata', formData);
+      if (response.status === 404) {
+        setErrorMessage(response.data.message);
+      } else {
+        console.log(response.data);
+        setErrorMessage('');
+        // Display the calculated result to the user (you can modify this part)
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setErrorMessage('*Data you are asking for is not available in the database.');
+    }
   };
 
   // Update districts based on selected state
@@ -33,11 +56,17 @@ const Form = () => {
     }
   }, [selectedFromYear, years]);
   
-  
   return (
     <>
+      
       <form onSubmit={handleSubmit} className={styles.card}>
         <h1 className={styles.title}>Metrological Data</h1>
+
+        {errorMessage && (
+        <div style={{ color: 'red', textAlign: 'center', marginBottom: '10px' }}>
+          {errorMessage}
+        </div>
+       )}
   
         <div>
           <label htmlFor="state">State</label>
