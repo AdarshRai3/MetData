@@ -903,7 +903,6 @@ import React from 'react';
 
 
 const dataTypes = [
-  'Rainfall',
   'Precipitation',
   'Minimum temperature',
   'Average temperature',
@@ -918,7 +917,7 @@ const dataTypes = [
 ];
 
 
-const years = Array.from({ length: 2024 - 1901 + 1 }, (_, i) => 1901 + i);
+const years = Array.from({ length: 2023 - 2014 + 1 }, (_, i) => 2014 + i);
 
 
 export { statesAndDistricts, dataTypes, years };
