@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { statesAndDistricts, dataTypes, years } from './SelectData';
 import axios from 'axios';
 import styles from './page.module.css';
+import Display from './Display';
 
 const Form = () => {
   // State to store the selected options
@@ -13,13 +14,13 @@ const Form = () => {
   const [selectedToYear, setSelectedToYear] = useState('');
   const [selectedAction, setSelectedAction] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-
+  const [calculatedResult, setCalculatedResult] = useState([]);
   // Function to handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = {
-      state: selectedState.toUpperCase(),
-      district: selectedDistrict.toUpperCase(),
+      state: selectedState,
+      district: selectedDistrict,
       dataType: selectedDataType,
       fromYear: selectedFromYear,
       toYear: selectedToYear,
@@ -30,9 +31,11 @@ const Form = () => {
       const response = await axios.post('http://localhost:8080/api/formdata', formData);
       if (response.status === 404) {
         setErrorMessage(response.data.message);
+        setCalculatedResult(null);
       } else {
         console.log(response.data);
         setErrorMessage('');
+        setCalculatedResult(response.data);
         // Display the calculated result to the user (you can modify this part)
       }
     } catch (error) {
@@ -129,7 +132,9 @@ const Form = () => {
         </div>
   
         <button type="submit">Display</button>
+        
       </form>
+      {calculatedResult && <Display calculatedResult={calculatedResult} />}
     </>
   )
 };
