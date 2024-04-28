@@ -5,7 +5,7 @@
   padding: 2rem;
   background-color: #fff;
   border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
 }
 
 .card h1 {
@@ -58,6 +58,30 @@
   background-color: #0056b3;
 }
 
+.dataTable {
+  border: 1px solid black; /* Border for the table */
+  border-collapse: collapse; /* Remove spacing between cells */
+  font-family: monospace; /* Monospace font for fixed-width */
+}
+
+.tableHeader {
+  background-color: #5fa9f8;; /* Header background color */
+  font-weight: bold; /* Bold text */
+  padding: 5px; /* Padding for headers */
+  border: 1px solid black;
+}
+
+.tableCell {
+  background-color: #5fa9f8;
+  text-align: center;
+  border: 1px solid black; /* Cell border */
+  padding: 5px; /* Padding for cells */
+}
+.title{
+  text-align: center;
+  color: #004fa4;
+  padding:1rem;
+}
 /* Media query for tablets */
 @media (max-width: 480px) {
   .card {
@@ -120,4 +144,5 @@
     font-size: 0.8rem;
     margin-top:2rem;
   }
+
 }

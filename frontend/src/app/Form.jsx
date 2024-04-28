@@ -134,7 +134,7 @@ const Form = () => {
         <button type="submit">Display</button>
         
       </form>
-      {calculatedResult && <Display calculatedResult={calculatedResult} />}
+      {(!calculatedResult || calculatedResult.length > 0) && <Display calculatedResult={calculatedResult} />}
     </>
   )
 };

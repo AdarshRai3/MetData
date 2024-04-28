@@ -87,7 +87,7 @@ function calculateMonthlyMean(data) {
         }
       }
       const average = count > 0 ? (sum / count).toFixed(2) : 0;
-      monthlyMeans.push({ month: monthName, average: parseFloat(average) });
+      monthlyMeans.push({ month: monthName, mean: parseFloat(average) });
     }
   
     return monthlyMeans;

@@ -9,50 +9,58 @@ const Display = ({ calculatedResult }) => {
   const getTableHeaders = () => {
     if (!calculatedResult) return [];
 
-    const headers = ['year']; // Always include 'year'
+    const headers = ['years']; // Starting header for months
 
     // Add additional headers based on the first object's properties (assuming consistent structure)
     if (calculatedResult.length > 0) {
       const firstRow = calculatedResult[0];
-      headers.push(...Object.keys(firstRow).filter(key => key !== 'year'));
+      headers.pop(...Object.keys(firstRow).filter(key => key !== 'years'));
+      headers.push(...Object.keys(firstRow).filter(key => key !== 'months'));
     }
 
     return headers;
   };
 
-  // Function to build table rows with a single cell per header (horizontal layout)
   const getTableRows = () => {
-    if (!calculatedResult) return [];
-
     const headers = getTableHeaders();
 
-    return calculatedResult.map((rowData) => (
-      <tr key={rowData.year}>
-        {/* Single cell containing all data for the row */}
-        <td key={rowData.year}>
-          {headers.map((header) => (
-            <span key={header}>
-              {header}: {rowData[header]} &nbsp; {/* Add spacing between data points */}
-            </span>
-          ))}
-        </td>
+    return headers.map((header) => (
+      <tr key={header}>
+        <th className={styles.tableHeader}>{header}</th> {/* Apply style to header */}
+        {calculatedResult.map((rowData) => (
+          <td key={rowData.year} className={styles.tableCell}>
+            {rowData[header]}
+          </td>
+        ))}
       </tr>
     ));
   };
 
-  const tableHeaders = getTableHeaders();
+
   const tableRows = getTableRows();
 
+  const tableStyles = {
+    border: '1px solid black', 
+    borderCollapse: 'collapse', 
+    fontFamily: 'monospace',
+    fontSize: '1.5rem',
+    padding: '0.5rem',
+    margin: '1rem'
+  };
+
   return (
-    <div className={styles.card}>
-      <h3>Graphical Representation of the Data:</h3>
-      <table>
-        <tbody>
-          {tableRows}
-        </tbody>
-      </table>
-    </div>
+    <>
+      <div className={styles.card}>
+        <h3 className={styles.title}>Graphical Representation of the Data:</h3>
+        <table className={styles.dataTable}> {/* Apply style to entire table */}
+          <tbody>
+            {tableRows}
+          </tbody>
+        </table>
+      </div>
+    </>
   );
 };
 
 export default Display;
+
