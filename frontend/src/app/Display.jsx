@@ -51,7 +51,7 @@ const Display = ({ calculatedResult }) => {
   return (
     <>
       <div className={styles.card}>
-        <h3 className={styles.title}>Graphical Representation of the Data:</h3>
+        <h3 className={styles.title}>Graphical Representation of the Data</h3>
         <table className={styles.dataTable}> {/* Apply style to entire table */}
           <tbody>
             {tableRows}
