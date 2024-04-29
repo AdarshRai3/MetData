@@ -99,7 +99,7 @@ const dataset = [
 
 const valueFormatter = (value) => `${value}mm`;
 
-const BarGraph=()=> {
+const MonthlyMean=()=> {
   return (
     <BarChart
       dataset={dataset}
@@ -113,4 +113,4 @@ const BarGraph=()=> {
   );
 }
  
-export default BarGraph;
+export default MonthlyMean;

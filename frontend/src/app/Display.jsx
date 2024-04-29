@@ -1,7 +1,8 @@
 import React from 'react';
 import styles from './page.module.css';
-import BarGraph from './BarGraph';
-
+import MonthlyMean from './MonthlyMeanGraph';
+import AnnualMean from './AnnualMeanGraph';
+import AnnualToTal from './AnnualTotalGraph';
 const Display = ({ calculatedResult }) => {
   if (!calculatedResult) {
     return <div className={styles.card}>No results to display yet.</div>;
@@ -49,9 +50,10 @@ const Display = ({ calculatedResult }) => {
             {tableRows}
           </tbody>
         </table>
-        <BarGraph/>
+        <MonthlyMean/>
+        <AnnualMean/>
+        <AnnualToTal/>
       </div>
-      
     </>
   );
 };
