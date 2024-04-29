@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './page.module.css';
 import MonthlyMean from './MonthlyMeanGraph';
 import AnnualMean from './AnnualMeanGraph';
-import AnnualToTal from './AnnualTotalGraph';
+import AnnualTotal from './AnnualTotalGraph';
 const Display = ({ calculatedResult }) => {
   if (!calculatedResult) {
     return <div className={styles.card}>No results to display yet.</div>;
@@ -50,9 +50,12 @@ const Display = ({ calculatedResult }) => {
             {tableRows}
           </tbody>
         </table>
-        <MonthlyMean/>
-        <AnnualMean/>
-        <AnnualToTal/>
+        {calculatedResult[0]?.mean && (
+          <>
+            {calculatedResult[0]?.months ? <MonthlyMean /> : <AnnualMean />}
+          </>
+        )}
+        {calculatedResult[0]?.total && <AnnualTotal />}
       </div>
     </>
   );
