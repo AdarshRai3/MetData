@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './page.module.css';
+import BarGraph from './BarGraph';
 
 const Display = ({ calculatedResult }) => {
   if (!calculatedResult) {
@@ -9,7 +10,7 @@ const Display = ({ calculatedResult }) => {
   const getTableHeaders = () => {
     if (!calculatedResult) return [];
 
-    const headers = ['years']; // Starting header for months
+    const headers = ['years']; // Starting header for years
 
     // Add additional headers based on the first object's properties (assuming consistent structure)
     if (calculatedResult.length > 0) {
@@ -39,15 +40,6 @@ const Display = ({ calculatedResult }) => {
 
   const tableRows = getTableRows();
 
-  const tableStyles = {
-    border: '1px solid black', 
-    borderCollapse: 'collapse', 
-    fontFamily: 'monospace',
-    fontSize: '1.5rem',
-    padding: '0.5rem',
-    margin: '1rem'
-  };
-
   return (
     <>
       <div className={styles.card}>
@@ -57,7 +49,9 @@ const Display = ({ calculatedResult }) => {
             {tableRows}
           </tbody>
         </table>
+        <BarGraph/>
       </div>
+      
     </>
   );
 };
