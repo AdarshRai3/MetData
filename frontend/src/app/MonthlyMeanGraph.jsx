@@ -43,7 +43,6 @@ const MonthlyMean = ({ district, state, calculatedResult, dataType }) => {
     svg.append("g")
       .attr("transform", `translate(${marginLeft},0)`)
       .call(d3.axisLeft(y))
-      .call(g => g.select(".domain").remove())
       .call(g => g.append("text")
       .attr("x", -marginLeft)
       .attr("y", 10)
