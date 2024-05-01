@@ -1,87 +1,77 @@
-import React from 'react';
-import { BarChart } from '@mui/x-charts/BarChart';
-import { Bar, XAxis, YAxis } from '@mui/x-charts'; // Import necessary components
+import React, { useEffect, useRef } from 'react';
+import * as d3 from 'd3'; // Import all d3 functions
 
-const chartSetting = {
-  xAxis: [
-    {
-      label: 'Precipitation (mm)',
-      tickFormat: (value) => `${value}mm`, // Format x-axis ticks with units
-    },
-  ],
-  width: 500,
-  height: 400,
-};
+const MonthlyMean = ({ district, state, calculatedResult, dataType }) => {
+  const svgRef = useRef(null); // Create a ref for the svg element
 
-const calculateMonthlyMeans = (data) => {
-  // Assuming 'data' is an array of objects with monthly precipitation data
-  const monthlyMeans = {};
-  for (const item of data) {
-    const month = item.month;
-    const precipitation = item.seoul; // Assuming 'seoul' property holds precipitation data for Seoul
-    monthlyMeans[month] = (monthlyMeans[month] || 0) + precipitation; // Calculate and accumulate monthly sums
-  }
+  useEffect(() => {
+    const svg = d3.select(svgRef.current); // Select the svg element using the ref
+    const width = 460;
+    const height = 450;
+    const margin = { top: 10, right: 30, bottom: 90, left: 40 };
 
-  // Calculate actual means by dividing by the number of months
-  const numMonths = data.length;
-  for (const month in monthlyMeans) {
-    monthlyMeans[month] /= numMonths;
-  }
+    // Process the data (assuming calculatedResult is an array)
+    const data = calculatedResult;
 
-  const formattedMeans = {};
-  for (const month in monthlyMeans) {
-    formattedMeans[month] = { month, seoul: Math.round(monthlyMeans[month]) }; // Round calculated means
-  }
+    // Scales
+    const x = d3.scaleBand()
+      .range([0, width - margin.left - margin.right])
+      .domain(data.map(d => d.month)) // Assuming 'month' property in data
+      .padding(0.2);
 
-  return formattedMeans;
-};
+    // Set y-axis domain to include negative values (assuming some means might be negative)
+    const y = d3.scaleLinear()
+      .domain([-Math.max(...data.map(d => Math.abs(d.mean))), 300]) // Extend domain to negative mean
+      .range([height - margin.bottom, margin.top]);
 
-const MonthlyMean = ({ calculatedResult }) => {
-  if (!calculatedResult) {
-    return <div>No results to display yet.</div>;
-  }
+    // Axes
+    // Configure bottom axis with middle tick position
+    svg.append('g')
+      .attr('transform', `translate(${margin.left}, ${height - margin.bottom})`)
+      .call(d3.axisBottom(x))
+      .selectAll('text')
+      .attr('transform', 'translate(-10,0)') // Center the text
+      .style('text-anchor', 'middle'); // Align text to the middle
 
-  const monthlyMeans = calculateMonthlyMeans(calculatedResult); // Calculate monthly means
+    // Configure left axis with middle tick position
+    svg.append('g')
+      .attr('transform', `translate(${margin.left}, ${margin.top})`)
+      .call(d3.axisLeft(y)
+        .ticks(11) // Set 11 ticks for increments of 30
+        .tickFormat(d => `${d}`)) // Customize tick format to display numbers
+      .selectAll('text')
+      .attr('transform', 'translate(0, -5)'); // Move text slightly to the right
 
-  const seriesData = Object.values(monthlyMeans); // Extract data for series
+    // Bars
+    svg.selectAll('rect')
+      .data(data)
+      .enter()
+      .append('rect')
+        .attr('x', d => x(d.month))
+        .attr('width', x.bandwidth())
+        .attr('fill', '#69b3a2')
+        // Display mean value inside the bar
+        .attr('text-anchor', 'middle')
+        .attr('dominant-baseline', 'middle') // Align text vertically
+        .text(d => d.mean > 0 ? `+${d.mean.toFixed(1)}` : d.mean.toFixed(1)) // Format and display mean
+        .append('tspan') // Add another text element for negative values (optional)
+          .attr('dy', '1.2em') // Position slightly below main text
+          .text(d => d.mean < 0 ? `${d.mean.toFixed(1)}` : '') // Display only for negative means
+        .attr('y', d => Math.max(height - margin.bottom, y(d.mean))) // Set bar bottom based on mean value
+        .attr('height', d => Math.abs(y(0) - y(d.mean))) // Set bar height based on mean value
+
+    // Animation (optional)
+    // svg.selectAll('rect')
+    //   .transition()
+    //   .duration(800)
+    //   // ... existing animation code ...
+
+  }, [calculatedResult]); // Update chart on data change
 
   return (
-    <BarChart
-      dataset={seriesData}
-      yAxis={[
-        {
-          scaleType: 'band',
-          dataKey: 'month',
-          tickPlacement: 'middle',
-          tickLabelPlacement: 'middle',
-          title: { // Add y-axis title (optional)
-            text: 'Month',
-          },
-        },
-      ]}
-      series={[
-        {
-          dataKey: 'seoul',
-          label: 'Seoul Rainfall (mm)', // Include units in label
-          barStyle: { fill: 'skyblue' }, // Set bar color (optional)
-        },
-      ]}
-      layout="horizontal"
-      grid={{ vertical: true }}
-      {...chartSetting}
-      // Add x-axis customization here:
-      axes={[
-        <XAxis
-          key="x"
-          min={0}
-          max={300}
-          tickInterval={30}
-          title={{ // Add x-axis title (optional)
-            text: 'Precipitation (mm)',
-          }}
-        />,
-      ]}
-    />
+    <>
+      <svg ref={svgRef} width={460} height={450} />
+    </>
   );
 };
 

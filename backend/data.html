@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <div id="data"></div>
+
+    <script>
+        async function fetchData() {
+            try {
+                const response = await fetch('http://localhost:8080/api/formdata');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                document.getElementById('data').innerHTML = JSON.stringify(data, null, 2);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        fetchData();
+    </script>
+</body>
+</html>

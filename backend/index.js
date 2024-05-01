@@ -9,13 +9,16 @@ app.use(express.json());
 app.use(cors());
 
 app.get("/", (req, res) => {
-  res.send("hello world");
+  res.send("Backend is up and running");
 });
 
 db.connect((err) => {
   if (err) throw err;
   console.log("mysql connected");
 });
+
+let calculatedResult;
+
 
 app.post("/api/formdata", (req, res) => {
   const { state, district, dataType, fromYear, toYear, action } = req.body;
@@ -36,7 +39,6 @@ app.post("/api/formdata", (req, res) => {
       return res.status(404).send({ message: "Data not found in the database." });
     }
 
-    let calculatedResult;
     switch (action) {
       case "annualMean":
         calculatedResult = calculateAnnualMean(results);
@@ -56,6 +58,14 @@ app.post("/api/formdata", (req, res) => {
 
     res.send(calculatedResult);
   });
+});
+
+app.get("/api/formdata", (req, res) => {
+  if (calculatedResult) {
+    res.send(calculatedResult);
+  } else {
+    res.status(404).send({ message: "No calculated result available." });
+  }
 });
 
 function calculateAnnualMean(data) {

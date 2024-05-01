@@ -56,28 +56,31 @@
 }
 
 .dataTable {
-  border: 1px solid black;
+  display: flex;
+  justify-content: center; 
   border-collapse: collapse;
   font-family: monospace;
 }
 
 .tableHeader {
-  background-color: #39b5b3;
+  background-color: #007bff;
   font-weight: bold;
+  color:aliceblue;
   padding: 5px;
   border: 1px solid black;
 }
 
 .tableCell {
-  background-color:#39b5b3;
+  background-color:#007bff;
   text-align: center;
+  color:aliceblue;
   border: 1px solid black;
   padding: 2px;
 }
 
 .title {
   text-align: center;
-  color:#39b5b3;
+  color:#007bff;
   padding: 1rem;
 }
 

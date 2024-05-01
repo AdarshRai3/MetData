@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './page.module.css';
 import MonthlyMean from './MonthlyMeanGraph';
 import AnnualMean from './AnnualMeanGraph';
 import AnnualTotal from './AnnualTotalGraph';
-const Display = ({ calculatedResult }) => {
+const Display = ({ calculatedResult,district, dataType,state,action }) => {
+
   if (!calculatedResult) {
     return <div className={styles.card}>No results to display yet.</div>;
   }
@@ -43,6 +44,7 @@ const Display = ({ calculatedResult }) => {
 
   return (
     <>
+      
       <div className={styles.card}>
         <h3 className={styles.title}>Graphical Representation of the Data</h3>
         <table className={styles.dataTable}> {/* Apply style to entire table */}
@@ -52,10 +54,11 @@ const Display = ({ calculatedResult }) => {
         </table>
         {calculatedResult[0]?.mean && (
           <>
-            {calculatedResult[0]?.months ? <MonthlyMean /> : <AnnualMean />}
+            {action==="monthlyMean" ? <MonthlyMean calculatedResult={calculatedResult} district={district} state={state} dataType={dataType}  /> : <AnnualMean district={district} state={state} dataType={dataType} calculatedResult={calculatedResult}/>}
           </>
         )}
-        {calculatedResult[0]?.total && <AnnualTotal />}
+        {calculatedResult[0]?.total && <AnnualTotal district={district} state={state} dataType={dataType} calculatedResult={calculatedResult} />}
+       
       </div>
     </>
   );
