@@ -118,10 +118,9 @@
 /* Media query for mobile */
 @media (max-width: 480px) {
   .card {
-    padding: 1rem;
-    margin: 1rem;
+    padding: 2rem;
     max-width: 100%;
-    height: 50vh;
+    height: 55vh;
     box-sizing: border-box;
   }
 
@@ -149,14 +148,7 @@
 
   /* Vertical layout for the table */
   .dataTable {
-    display: block;
-    width: 100%;
+    display: none;
   }
 
-  .tableHeader,
-  .tableCell {
-    display: block;
-    text-align: left;
-    padding: 5px;
-  }
 }

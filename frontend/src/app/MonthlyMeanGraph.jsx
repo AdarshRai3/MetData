@@ -1,77 +1,60 @@
 import React, { useEffect, useRef } from 'react';
-import * as d3 from 'd3'; // Import all d3 functions
+import * as d3 from 'd3'; 
 
 const MonthlyMean = ({ district, state, calculatedResult, dataType }) => {
-  const svgRef = useRef(null); // Create a ref for the svg element
+  const ref = useRef();
 
   useEffect(() => {
-    const svg = d3.select(svgRef.current); // Select the svg element using the ref
-    const width = 460;
-    const height = 450;
-    const margin = { top: 10, right: 30, bottom: 90, left: 40 };
-
-    // Process the data (assuming calculatedResult is an array)
     const data = calculatedResult;
+    const svg = d3.select(ref.current);
+    const width = 464;
+    const height = 250;
+    const marginTop = 30;
+    const marginRight = 0;
+    const marginBottom = 30;
+    const marginLeft = 40;
 
-    // Scales
+    svg.selectAll("*").remove();
+
+ 
     const x = d3.scaleBand()
-      .range([0, width - margin.left - margin.right])
-      .domain(data.map(d => d.month)) // Assuming 'month' property in data
-      .padding(0.2);
+      .domain(data.map(d => d.month))
+      .range([marginLeft, width - marginRight])
+      .padding(0.1);
 
-    // Set y-axis domain to include negative values (assuming some means might be negative)
     const y = d3.scaleLinear()
-      .domain([-Math.max(...data.map(d => Math.abs(d.mean))), 300]) // Extend domain to negative mean
-      .range([height - margin.bottom, margin.top]);
+      .domain([0, 300])
+      .range([height - marginBottom, marginTop]);
 
-    // Axes
-    // Configure bottom axis with middle tick position
-    svg.append('g')
-      .attr('transform', `translate(${margin.left}, ${height - margin.bottom})`)
-      .call(d3.axisBottom(x))
-      .selectAll('text')
-      .attr('transform', 'translate(-10,0)') // Center the text
-      .style('text-anchor', 'middle'); // Align text to the middle
-
-    // Configure left axis with middle tick position
-    svg.append('g')
-      .attr('transform', `translate(${margin.left}, ${margin.top})`)
-      .call(d3.axisLeft(y)
-        .ticks(11) // Set 11 ticks for increments of 30
-        .tickFormat(d => `${d}`)) // Customize tick format to display numbers
-      .selectAll('text')
-      .attr('transform', 'translate(0, -5)'); // Move text slightly to the right
-
-    // Bars
-    svg.selectAll('rect')
+    svg.append("g")
+      .attr("fill", "#007bff")
+      .selectAll("rect")
       .data(data)
-      .enter()
-      .append('rect')
-        .attr('x', d => x(d.month))
-        .attr('width', x.bandwidth())
-        .attr('fill', '#69b3a2')
-        // Display mean value inside the bar
-        .attr('text-anchor', 'middle')
-        .attr('dominant-baseline', 'middle') // Align text vertically
-        .text(d => d.mean > 0 ? `+${d.mean.toFixed(1)}` : d.mean.toFixed(1)) // Format and display mean
-        .append('tspan') // Add another text element for negative values (optional)
-          .attr('dy', '1.2em') // Position slightly below main text
-          .text(d => d.mean < 0 ? `${d.mean.toFixed(1)}` : '') // Display only for negative means
-        .attr('y', d => Math.max(height - margin.bottom, y(d.mean))) // Set bar bottom based on mean value
-        .attr('height', d => Math.abs(y(0) - y(d.mean))) // Set bar height based on mean value
+      .join("rect")
+        .attr("x", d => x(d.month))
+        .attr("y", d => y(d.mean))
+        .attr("height", d => y(0) - y(d.mean))
+        .attr("width", x.bandwidth());
 
-    // Animation (optional)
-    // svg.selectAll('rect')
-    //   .transition()
-    //   .duration(800)
-    //   // ... existing animation code ...
+    svg.append("g")
+      .attr("transform", `translate(0,${height - marginBottom})`)
+      .call(d3.axisBottom(x).tickSizeOuter(0));
 
-  }, [calculatedResult]); // Update chart on data change
+    svg.append("g")
+      .attr("transform", `translate(${marginLeft},0)`)
+      .call(d3.axisLeft(y))
+      .call(g => g.select(".domain").remove())
+      .call(g => g.append("text")
+      .attr("x", -marginLeft)
+      .attr("y", 10)
+      .attr("fill", "currentColor")
+      .attr("text-anchor", "start")
+      .text("Mean ↑"));
+
+  }, [calculatedResult]);
 
   return (
-    <>
-      <svg ref={svgRef} width={460} height={450} />
-    </>
+    <svg ref={ref} style={{width: "100%", height: "500px"}}></svg>
   );
 };
 
