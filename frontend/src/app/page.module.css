@@ -2,7 +2,7 @@
   max-width: 600px;
   margin: 2rem auto;
   padding: 2rem;
-  background-color: #fff;
+  background-color: #f8f8f8;
   border-radius: 10px;
   box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
 }
@@ -83,6 +83,7 @@
   color:#007bff;
   padding: 1rem;
 }
+
 
 /* Media query for tablets */
 @media (max-width: 480px) {

@@ -29,13 +29,13 @@ const Display = ({ calculatedResult,district, dataType,state,action }) => {
 
     return headers.map((header) => (
       <tr key={header}>
-        <th className={styles.tableHeader}>{header}</th> {/* Apply style to header */}
-        {calculatedResult.map((rowData) => (
-          <td key={rowData.year} className={styles.tableCell}>
-            {rowData[header]}
-          </td>
+       <th className={styles.tableHeader}>{header}</th>
+         {calculatedResult.map((rowData) => (
+         <td key={rowData.year} className={styles.tableCell}>
+           {rowData[header]}
+         </td>
         ))}
-      </tr>
+     </tr>
     ));
   };
 
@@ -46,8 +46,8 @@ const Display = ({ calculatedResult,district, dataType,state,action }) => {
     <>
       
       <div className={styles.card}>
-      <h3 className={styles.title}>Graphical Representation of the {`${dataType} Data`}</h3>
-        <table className={styles.dataTable}> {/* Apply style to entire table */}
+      <h3 className={styles.title}>Data Representation of the {`${dataType}`}</h3>
+        <table className={styles.dataTable}>
           <tbody>
             {tableRows}
           </tbody>
