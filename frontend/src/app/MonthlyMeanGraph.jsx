@@ -23,9 +23,9 @@ const MonthlyMean = ({ district, state, calculatedResult, dataType }) => {
         svg.selectAll("*").remove();
 
         const x = d3.scaleBand()
-            .domain(data.map(d => d.month))
-            .range([marginLeft, width - marginRight])
-            .padding(0.2);
+         .domain(data.map(d => d.month))
+         .range([marginLeft, width - marginRight])
+         .padding(0.2);
 
         const y = d3.scaleLinear()
             .domain([0, 300])
