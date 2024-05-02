@@ -22,7 +22,10 @@ let calculatedResult;
 
 app.post("/api/formdata", (req, res) => {
   const { state, district, dataType, fromYear, toYear, action } = req.body;
-
+  
+  if (!state || !district || !dataType || !fromYear || !toYear || !action) {
+    return res.status(400).send({ message: "Missing required parameters." });
+  }
   const query = `
       SELECT year, jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, \`dec\` 
       FROM metdatadb.${dataType} 
@@ -31,7 +34,10 @@ app.post("/api/formdata", (req, res) => {
   `;
 
   db.query(query, [state, district, fromYear, toYear], (err, results) => {
-    if (err) throw err;
+    if (err) {
+      console.error(err);
+      return res.status(500).send({ message: "Database error." });
+    }
 
     console.log("Fetched Data:", results);
 

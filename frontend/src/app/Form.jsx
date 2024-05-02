@@ -1,3 +1,4 @@
+'use client';
 import React, { useState, useEffect } from 'react';
 import { statesAndDistricts, dataTypes, years } from './SelectData';
 import axios from 'axios';
@@ -26,7 +27,7 @@ const Form = () => {
     };
     try {
       const response = await axios.post('http://localhost:8080/api/formdata', formData);
-      if (response.status === 404) {
+      if (response.status === 404 && response.status === 500 && response.status === 400) {
         setErrorMessage(response.data.message);
         setCalculatedResult(null);
       } else {
@@ -126,15 +127,15 @@ const Form = () => {
         <button type="submit">Display</button>
         
       </form>
-      {(!calculatedResult || calculatedResult.length > 0) && (
+      {(errorMessage === '' && calculatedResult && calculatedResult.length > 0) && (
       <Display
-         calculatedResult={calculatedResult}
-         district={selectedDistrict}
-         dataType={selectedDataType}
-         state={selectedState}
-         action={selectedAction}
+       calculatedResult={calculatedResult}
+       district={selectedDistrict}
+       dataType={selectedDataType}
+       state={selectedState}
+       action={selectedAction}
       />
-)}
+   )}
     </>
   )
 };
