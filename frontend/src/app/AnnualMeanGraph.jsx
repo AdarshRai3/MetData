@@ -49,30 +49,27 @@ const AnnualMean = ({ district, state, calculatedResult, dataType }) => {
       });
     }
 
-
-    // Rectangles with hover interaction
     const rectGroup = svg.append("g")
       .attr("fill", "#007bff");
 
     rectGroup.selectAll("rect")
       .data(data)
       .join("rect")
-      .attr("x", d => x(d.year) + x.bandwidth() / 2 - x.bandwidth() / 4) // Center the bar on the tick
+      .attr("x", d => x(d.year) + x.bandwidth() / 2 - x.bandwidth() / 4)
       .attr("y", d => y(d.mean))
       .attr("height", d => y(0) - y(d.mean))
-      .attr("width", x.bandwidth() / 2) // Set the maximum width to 30
+      .attr("width", x.bandwidth() / 2)
       .on("mouseover", (event, d) => setHoverData(d))
       .on("mouseout", () => setHoverData(null));
 
-    // Axes
     svg.append("g")
       .attr("transform", `translate(0,${height - marginBottom})`)
       .call(d3.axisBottom(x).tickSizeOuter(0))
       .selectAll("text")
-      .style("text-anchor", "middle") // Center the text on the tick
+      .style("text-anchor", "middle")
       .attr("dx", "0")
       .attr("dy", ".71em")
-      .attr("transform", "rotate(0)"); // No rotation for horizontal labels
+      .attr("transform", "rotate(0)");
 
     svg.append("g")
       .attr("class", "grid")
@@ -111,7 +108,7 @@ const AnnualMean = ({ district, state, calculatedResult, dataType }) => {
     <div style={{ position: "relative" }}>
     <svg
       ref={ref}
-      viewBox={`0 0 ${dimensions.width} ${dimensions.height}`} // Use state variables here
+      viewBox={`0 0 ${dimensions.width} ${dimensions.height}`}
       preserveAspectRatio="xMidYMid meet"
       style={{
         width: "75vw",

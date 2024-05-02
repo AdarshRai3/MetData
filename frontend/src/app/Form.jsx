@@ -1,4 +1,3 @@
-'use client'
 import React, { useState, useEffect } from 'react';
 import { statesAndDistricts, dataTypes, years } from './SelectData';
 import axios from 'axios';
@@ -6,7 +5,6 @@ import styles from './page.module.css';
 import Display from './Display';
 
 const Form = () => {
-  // State to store the selected options
   const [selectedState, setSelectedState] = useState('');
   const [selectedDistrict, setSelectedDistrict] = useState('');
   const [selectedDataType, setSelectedDataType] = useState('');
@@ -15,7 +13,7 @@ const Form = () => {
   const [selectedAction, setSelectedAction] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [calculatedResult, setCalculatedResult] = useState([]);
-  // Function to handle form submission
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = {
@@ -26,25 +24,20 @@ const Form = () => {
       toYear: selectedToYear,
       action: selectedAction
     };
-    console.log(`Form submitted with options: ${JSON.stringify(formData)}`);
     try {
       const response = await axios.post('http://localhost:8080/api/formdata', formData);
       if (response.status === 404) {
         setErrorMessage(response.data.message);
         setCalculatedResult(null);
       } else {
-        console.log(response.data);
         setErrorMessage('');
         setCalculatedResult(response.data);
-        // Display the calculated result to the user (you can modify this part)
       }
     } catch (error) {
-      console.error('Error submitting form:', error);
       setErrorMessage('*Data you are asking for is not available in the database.');
     }
   };
 
-  // Update districts based on selected state
   useEffect(() => {
     if (selectedState) {
       const stateObj = statesAndDistricts.find(state => state.state === selectedState);
@@ -61,7 +54,6 @@ const Form = () => {
   
   return (
     <>
-      
       <form onSubmit={handleSubmit} className={styles.card}>
         <h1 className={styles.title}>Metrological Data</h1>
 

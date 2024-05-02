@@ -84,7 +84,6 @@
   padding: 1rem;
 }
 
-
 /* Media query for tablets */
 @media (max-width: 480px) {
   .card {
@@ -147,7 +146,6 @@
     margin-top: 2rem;
   }
 
-  /* Vertical layout for the table */
   .dataTable {
     display: none;
   }

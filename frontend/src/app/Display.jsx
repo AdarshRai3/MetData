@@ -3,6 +3,7 @@ import styles from './page.module.css';
 import MonthlyMean from './MonthlyMeanGraph';
 import AnnualMean from './AnnualMeanGraph';
 import AnnualTotal from './AnnualTotalGraph';
+
 const Display = ({ calculatedResult,district, dataType,state,action }) => {
 
   if (!calculatedResult) {
@@ -12,9 +13,8 @@ const Display = ({ calculatedResult,district, dataType,state,action }) => {
   const getTableHeaders = () => {
     if (!calculatedResult) return [];
 
-    const headers = ['years']; // Starting header for years
+    const headers = ['years'];
 
-    // Add additional headers based on the first object's properties (assuming consistent structure)
     if (calculatedResult.length > 0) {
       const firstRow = calculatedResult[0];
       headers.pop(...Object.keys(firstRow).filter(key => key !== 'years'));
@@ -39,12 +39,10 @@ const Display = ({ calculatedResult,district, dataType,state,action }) => {
     ));
   };
 
-
   const tableRows = getTableRows();
 
   return (
     <>
-      
       <div className={styles.card}>
       <h3 className={styles.title}>Data Representation of the {`${dataType}`}</h3>
         <table className={styles.dataTable}>
@@ -52,7 +50,6 @@ const Display = ({ calculatedResult,district, dataType,state,action }) => {
             {tableRows}
           </tbody>
         </table>
-        {/* title */}
       <h5 className={styles.title}>{`${dataType} for ${district} (${state})`}</h5>
         {calculatedResult[0]?.mean && (
           <>
@@ -67,4 +64,3 @@ const Display = ({ calculatedResult,district, dataType,state,action }) => {
 };
 
 export default Display;
-
