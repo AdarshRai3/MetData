@@ -5,17 +5,19 @@ const MonthlyMean = ({ district, state, calculatedResult, dataType }) => {
     const ref = useRef();
   const [hoverData, setHoverData] = useState(null);
   const [hoverStyle, setHoverStyle] = useState({});
-
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 }); // New state variables
   useEffect(() => {
     const data = calculatedResult;
     const svg = d3.select(ref.current);
     const svgDimensions = svg.node().getBoundingClientRect();
     const width = svgDimensions.width;
     const height = svgDimensions.height;
-    const marginTop = 50;
+    const marginTop = 5;
     const marginRight = 50;
     const marginBottom = 50;
     const marginLeft = 70;
+
+    setDimensions({ width, height });
 
     svg.selectAll("*").remove();
 
@@ -43,15 +45,7 @@ const MonthlyMean = ({ district, state, calculatedResult, dataType }) => {
           borderRadius: '5px',
           });
         }
-    // Title
-    svg.append("text")
-      .attr("x", width * 0.5)
-      .attr("y", marginTop * 0.5)
-      .attr("text-anchor", "middle")
-      .style("font-size", "16px")
-      .style("font-weight", "bold")
-      .style("fill", "#007bff")
-      .text(`Monthly Mean ${dataType} for ${district} (${state})`);
+   
 
     // Rectangles with hover interaction
     const rectGroup = svg.append("g")
@@ -77,16 +71,15 @@ const MonthlyMean = ({ district, state, calculatedResult, dataType }) => {
       .attr("dy", ".15em")
       .attr("transform", "rotate(-65)");
     
-    svg.append("g")
-    .attr("class", "grid")
-    .attr("transform", `translate(${marginLeft},0)`)
-    .call(d3.axisLeft(y)
-      .tickSize(-(width-marginLeft-marginRight))
-      .tickFormat("")
-    )
-    .attr("stroke-opacity", "0.1");
+      svg.append("g")
+       .attr("transform", `translate(${marginLeft},0)`)
+       .call(d3.axisLeft(y)
+       .tickSize(-(width-marginLeft-marginRight))
+       .tickFormat("")
+        )
+       .attr("stroke-opacity", "0.1");
     
-    svg.append("g")
+      svg.append("g")
       .attr("transform", `translate(${marginLeft},0)`)
       .call(d3.axisLeft(y))
       .append("text")
@@ -108,12 +101,14 @@ const MonthlyMean = ({ district, state, calculatedResult, dataType }) => {
       .style("font-size", "14px")
       .style("fill", "#007bff")
       .text("Mean value");
-  }, [calculatedResult, district, state, dataType, hoverData]);
+  },  [calculatedResult, district, state, dataType, hoverData]);
 
- return (
+  return (
     <div style={{ position: "relative" }}>
       <svg
         ref={ref}
+        viewBox={`0 0 ${dimensions.width} ${dimensions.height}`} // Use state variables here
+        preserveAspectRatio="xMidYMid meet"
         style={{
           width: "75vw",
           height: "50vh",

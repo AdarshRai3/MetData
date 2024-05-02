@@ -5,6 +5,7 @@ const AnnualTotal = ({ district, state, calculatedResult, dataType }) => {
   const ref = useRef();
   const [hoverData, setHoverData] = useState(null);
   const [hoverStyle, setHoverStyle] = useState({});
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   useEffect(() => {
     const data = calculatedResult;
@@ -12,11 +13,12 @@ const AnnualTotal = ({ district, state, calculatedResult, dataType }) => {
     const svgDimensions = svg.node().getBoundingClientRect();
     const width = svgDimensions.width;
     const height = svgDimensions.height;
-    const marginTop = 50;
+    const marginTop = 5;
     const marginRight = 50;
     const marginBottom = 50;
     const marginLeft = 70;
-
+    
+    setDimensions({ width, height });
     svg.selectAll("*").remove();
 
     const x = d3.scaleBand()
@@ -45,15 +47,7 @@ const AnnualTotal = ({ district, state, calculatedResult, dataType }) => {
       });
     }
 
-    // Title
-    svg.append("text")
-      .attr("x", width * 0.5)
-      .attr("y", marginTop * 0.5)
-      .attr("text-anchor", "middle")
-      .style("font-size", "16px")
-      .style("font-weight", "bold")
-      .style("fill", "#007bff")
-      .text(`Annual Total ${dataType} for ${district} (${state})`);
+    
 
     // Rectangles with hover interaction
     const rectGroup = svg.append("g")
@@ -114,24 +108,26 @@ const AnnualTotal = ({ district, state, calculatedResult, dataType }) => {
 
   return (
     <div style={{ position: "relative" }}>
-      <svg
-        ref={ref}
-        style={{
-          width: "75vw",
-          height: "50vh",
-          display: "flex",
-          justifyContent: "center",
-          margin: "2rem",
-        }}
-      ></svg>
-      {hoverData && (
-        <div style={hoverStyle}>
-          {`Year: ${hoverData ? hoverData.year : ''}`}
-          <br />
-          {`Total: ${hoverData ? hoverData.total : ''}`}
-        </div>
-      )}
-    </div>
+    <svg
+      ref={ref}
+      viewBox={`0 0 ${dimensions.width} ${dimensions.height}`} // Use state variables here
+      preserveAspectRatio="xMidYMid meet"
+      style={{
+        width: "75vw",
+        height: "50vh",
+        display: "flex",
+        justifyContent: "center",
+        margin: "2rem",
+      }}
+    ></svg>
+    {hoverData && (
+      <div style={hoverStyle}>
+        {`Month: ${hoverData ? hoverData.year : ''}`}
+        <br />
+        {`Mean: ${hoverData ? hoverData.total : ''}`}
+      </div>
+    )}
+     </div>
   );
 };
 

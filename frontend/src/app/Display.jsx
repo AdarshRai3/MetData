@@ -52,6 +52,8 @@ const Display = ({ calculatedResult,district, dataType,state,action }) => {
             {tableRows}
           </tbody>
         </table>
+        {/* title */}
+      <h5 className={styles.title}>{`${dataType} for ${district} (${state})`}</h5>
         {calculatedResult[0]?.mean && (
           <>
             {action==="monthlyMean" ? <MonthlyMean calculatedResult={calculatedResult} district={district} state={state} dataType={dataType}  /> : <AnnualMean district={district} state={state} dataType={dataType} calculatedResult={calculatedResult}/>}
