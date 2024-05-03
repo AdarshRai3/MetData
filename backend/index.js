@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import db from "./connnection.js";
+import db from "./connection.js";
 
 const app = express();
 const PORT = 8080;
