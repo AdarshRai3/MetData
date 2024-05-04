@@ -903,7 +903,7 @@ import React from 'react';
 
 
 const dataTypes = [
-  'precipitation',
+  'Precipitation',
   'Minimum temperature',
   'Average temperature',
   'Maximum temperature',

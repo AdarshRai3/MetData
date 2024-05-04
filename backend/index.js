@@ -38,7 +38,7 @@ app.post("/api/formdata", (req, res) => {
   }
 
   const query = `
-    SELECT year, jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, \`dec\`
+    SELECT year, jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, deb
     FROM b5da1u4r1wr8gvlhvand.${dataType}
     WHERE UPPER(state) = UPPER(?) AND UPPER(district) = UPPER(?) AND year BETWEEN ? AND ?
   `;
