@@ -6,7 +6,9 @@ const app = express();
 const PORT = 8080;
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: "https://met-data.vercel.app/",
+}));
 
 app.get("/", (req, res) => {
   res.send("Backend is up and running");

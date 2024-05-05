@@ -27,7 +27,7 @@ const Form = () => {
     };
     try {
       console.log(formData);
-      const response = await axios.post('http://localhost:8080/api/formdata', formData);
+      const response = await axios.post('https://metdata.onrender.com/api/formdata', formData);
       if (response.status === 404 && response.status === 500 && response.status === 400) {
         setErrorMessage(response.data.message);
         setCalculatedResult(null);
